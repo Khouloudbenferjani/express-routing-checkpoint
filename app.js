@@ -1,54 +1,72 @@
-const express = require('express')
+const express = require("express")
 const bodyParser = require("body-parser")
 const dateCondition = require("./Middlewares/date")
+const app=express()
 
-// initialisation app params
-const app = express()
 const port = 3500
+
 app.use(bodyParser())
-// define routes
-app.get('/',dateCondition, (req, res) => {
-
-    res.status(200).send("hello there 👌")
-
+//define route
+app.get('/',(req,res)=>{
+res.status(200).send("Hello 💥")
 })
 
-app.get("/welcome", (req, res) => {
-    res.status(200).send("<h1> welcome to express👏 </h1>");
-});
 
-app.get('/home',dateCondition, (req, res) => {
+
+  app.get('/home',(req,res)=>{
     try {
-        res.sendFile(__dirname + "views/index.html", (error))
-        res.status(400).send("<h2> Sorry 🤦‍♀️,try again </h2>")
-    }catch (error) {
-        // the msg that i want to show to the customer
-        res.status(404).send("sorry not found");
+      res.sendFile(__dirname+"/html/home.html",(err)=>{
+        res.status(400).send("<h2>Sorry WRONG FILE</h2>")
+    })}
+    catch(error)
+    {
+      res.status(400).send("sorry not found....")
+      console.log(error)
+    }
+  
+      });
+  
+
+    app.get('/welcome',dateCondition,(req,res)=>{
+      try {
+        res.status(200).send("WELCOME EXPRESS 💥")
+      }
+      catch(error)
+      {
+        res.status(400).send("sorry not found....")
         console.log(error)
-    };
-})
+      }
+    
+        });
 
+// POST METHODE
 
-
-app.post('/addUser', (req, res) => {
-    if (req.body) {
-        console.log(req.body);
-        res.status(200).send("user added successfully")
-    } else {
-        res.status(400).send("andek ghalta")
+app.post('/',(req,res)=>
+{
+    if(req.body) {
+    
+    res.status(200).send("user added succefully")
+    console.log(req.body);
     }
-})
+    else{
+    res.status(200).send("wrong input")
+}
+}
+)
 
 
-// starting the server on the express app
-app.listen(port, (e) => {
+// start server
+app.listen(port,(err)=>{
+  
+if(err)
+{
+    console.log("error in server:",err);
+}
+    else
+    {
+        console.log(`server is running on .. http://localhost:${port}`);
 
-    if (e) {
-        console.log("error in the server:", e);
-    } else {
-        console.log(`server is running on..http://localhost:${port}`);
+
     }
-
-})
-
-
+}
+)
